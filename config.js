@@ -3,6 +3,6 @@
 // Settings > API > Project URL & Anon Key
 
 const SB_CONFIG = {
-  url: "YOUR_SUPABASE_URL_HERE",
-  key: "YOUR_SUPABASE_ANON_KEY_HERE"
+  url: "https://popbbuaumjkkgaekfkpb.supabase.co",
+  key: "sb_publishable_cc7wCCY6IE1KAxqhVEGRhA_mx0fToaA"
 };
