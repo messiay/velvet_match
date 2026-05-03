@@ -188,7 +188,7 @@ function initWaitlistForm() {
   const submitBtn = document.getElementById("wlSubmit");
   if (!form) return;
 
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     errEl.textContent = "";
 
