@@ -192,7 +192,7 @@ function showStatus(id, msg, isErr = false) {
 async function renderResponsesTab() {
   const { data: list, error } = await db.getWaitlist();
   if (error) return;
-  const tbody = document.getElementById("responsesBody");
+  const tbody = document.getElementById("responseTableBody");
   if (!tbody) return;
 
   if (!list || list.length === 0) {
