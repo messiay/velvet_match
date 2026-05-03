@@ -19,7 +19,7 @@ function pad(n) { return String(n).padStart(2,"0"); }
 
 // ─── State ───────────────────────────────────────────────────────────────────
 const state = {
-  event: loadJson(SK.event, { name:"", date:"", time:"", venue:"", note:"" }),
+  event: { name:"", date:"", time:"", revealTime:"", venue:"", note:"" },
   formLink: loadJson(SK.formLink, { url:"", active: false }),
   user: loadJson(SK.user, null),
 };
@@ -214,22 +214,26 @@ function initWaitlistForm() {
     }
 
     const newId = crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}`;
-    const newUser = {
-      id: newId,
-      name, email,
-      insta: insta || "",
-      gender, status,
-      about: about || "",
-      joinedAt: new Date().toISOString(),
-      badgeNum: String(list.length).padStart(4, '0')
-    };
-    list.push(newUser);
-    saveJson(SK.waitlist, list);
-    saveJson(SK.user, newUser);
+    submitBtn.disabled = true;
+    submitBtn.querySelector("span").textContent = "Joining...";
 
-    // Update UI for success
-    showProfileCard(newUser);
+    const guest = { name, email, insta, gender, status, about, badge_num: pad(Math.floor(Math.random()*9999)) };
     
+    const { error } = await db.joinWaitlist(guest);
+    
+    if (error) {
+      errEl.textContent = error.code === '23505' ? "This email is already registered." : "Something went wrong. Try again.";
+      submitBtn.disabled = false;
+      submitBtn.querySelector("span").textContent = "Get Me on the List";
+      return;
+    }
+
+    state.user = guest;
+    saveJson(SK.user, guest);
+    form.style.display = "none";
+    success.style.display = "block";
+    showProfileCard(guest);
+
     // Scroll to success card
     document.getElementById("profileSection").scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
@@ -294,9 +298,20 @@ function showProfileCard(user) {
 }
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
-renderEventPanel();
-initParticles();
-initWaitlistForm();
+async function initApp() {
+  const ev = await db.getEvent();
+  if (ev) state.event = ev;
+  
+  if (state.user && state.user.email) {
+    const dbUser = await db.checkRegistration(state.user.email);
+    if (dbUser) state.user = dbUser;
+  }
+
+  renderEventPanel();
+  initParticles();
+  initWaitlistForm();
+}
+initApp();
 
 // Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach((link) => {

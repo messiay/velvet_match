@@ -42,21 +42,21 @@ function pad(n) { return String(n).padStart(2,"0"); }
 function $(id) { return document.getElementById(id); }
 
 // ─── Auth ─────────────────────────────────────────────────────────────────────
-function checkSession() {
+async function checkSession() {
   const session = loadJson(SK.adminSession, null);
   if (session && ADMIN_EMAILS.includes(session.email?.toLowerCase())) {
-    showAdminPanel(session.email);
+    await showAdminPanel(session.email);
   }
 }
 
-function showAdminPanel(email) {
+async function showAdminPanel(email) {
   $("adminLoginGate").style.display = "none";
   $("adminPanel").style.display = "flex";
   $("adminEmailDisplay").textContent = email;
-  initAdminPanel();
+  await initAdminPanel();
 }
 
-$("adminLoginBtn").addEventListener("click", () => {
+$("adminLoginBtn").addEventListener("click", async () => {
   const emailVal = $("adminEmail").value.trim().toLowerCase();
   const errEl = $("algError");
   errEl.textContent = "";
@@ -67,7 +67,7 @@ $("adminLoginBtn").addEventListener("click", () => {
   }
 
   saveJson(SK.adminSession, { email: emailVal });
-  showAdminPanel(emailVal);
+  await showAdminPanel(emailVal);
 });
 
 $("adminEmail").addEventListener("keydown", (e) => {
@@ -80,43 +80,50 @@ $("adminLogout").addEventListener("click", () => {
 });
 
 // ─── Tab switching ────────────────────────────────────────────────────────────
-function initAdminPanel() {
+async function initAdminPanel() {
   document.querySelectorAll(".as-nav-item").forEach((item) => {
-    item.addEventListener("click", (e) => {
+    item.addEventListener("click", async (e) => {
       e.preventDefault();
       const tab = item.dataset.tab;
       document.querySelectorAll(".as-nav-item").forEach((i) => i.classList.remove("active"));
       item.classList.add("active");
       document.querySelectorAll(".admin-tab").forEach((t) => t.style.display = "none");
-      $(`tabContent${tab.charAt(0).toUpperCase() + tab.slice(1)}`).style.display = "block";
+      
+      const tabId = `tabContent${tab.charAt(0).toUpperCase() + tab.slice(1)}`;
+      const tabEl = $(tabId);
+      if (tabEl) tabEl.style.display = "block";
+
+      if (tab === "event") await renderEventTab();
+      if (tab === "responses") await renderResponsesTab();
+      if (tab === "matches") renderMatchesTab();
     });
   });
 
-  renderEventTab();
-  renderResponsesTab();
+  await renderEventTab();
+  await renderResponsesTab();
   renderMatchesTab();
 }
 
 // ─── Event Tab ────────────────────────────────────────────────────────────────
-function renderEventTab() {
-  const ev = loadJson(SK.event, {});
+async function renderEventTab() {
+  const ev = await db.getEvent() || {};
   const fl = loadJson(SK.formLink, { url:"", active:false });
 
   if (ev.name)  $("evName").value  = ev.name;
   if (ev.date)  $("evDate").value  = ev.date;
   if (ev.time)  $("evTime").value  = ev.time;
-  if (ev.revealTime) $("evRevealTime").value = ev.revealTime;
+  if (ev.reveal_time) $("evRevealTime").value = ev.reveal_time;
   if (ev.venue) $("evVenue").value = ev.venue;
   if (ev.note)  $("evNote").value  = ev.note;
 
   $("formLink").value = fl.url || "";
   $("formLinkActive").checked = fl.active || false;
 
-  updatePreview();
+  await updatePreview();
 }
 
-function updatePreview() {
-  const ev = loadJson(SK.event, {});
+async function updatePreview() {
+  const ev = await db.getEvent() || {};
   const fl = loadJson(SK.formLink, {});
 
   $("prevName").textContent = ev.name || "Not set";
@@ -136,18 +143,29 @@ function updatePreview() {
   $("prevFormCta").style.display = (fl.active && fl.url) ? "block" : "none";
 }
 
-$("saveEvent").addEventListener("click", () => {
+$("saveEvent").addEventListener("click", async () => {
   const ev = {
     name:  $("evName").value.trim(),
     date:  $("evDate").value,
     time:  $("evTime").value,
-    revealTime: $("evRevealTime").value,
+    reveal_time: $("evRevealTime").value,
     venue: $("evVenue").value.trim(),
     note:  $("evNote").value.trim(),
   };
-  saveJson(SK.event, ev);
-  updatePreview();
-  showStatus("saveEventStatus", "✓ Event details saved.");
+  const { error } = await db.saveEvent(ev);
+  if (error) {
+    showStatus("saveEventStatus", "⚠ Error saving to database.");
+  } else {
+    await updatePreview();
+    showStatus("saveEventStatus", "✓ Event details saved to cloud.");
+  }
+});
+
+$("deleteEvent").addEventListener("click", async () => {
+  if (confirm("Are you sure? This will delete the event from the live site and the database.")) {
+    await db.deleteEvent();
+    location.reload();
+  }
 });
 
 $("saveFormLink").addEventListener("click", () => {
@@ -162,25 +180,6 @@ $("saveFormLink").addEventListener("click", () => {
     : "✓ Form settings saved. Link is not yet active.");
 });
 
-$("deleteEvent").addEventListener("click", () => {
-  if (!confirm("Are you sure you want to delete the current event? This will clear all details.")) return;
-  
-  localStorage.removeItem(SK.event);
-  localStorage.removeItem(SK.formLink);
-  
-  // Clear inputs
-  $("evName").value = "";
-  $("evDate").value = "";
-  $("evTime").value = "";
-  $("evVenue").value = "";
-  $("evNote").value = "";
-  $("formLink").value = "";
-  $("formLinkActive").checked = false;
-  
-  updatePreview();
-  showStatus("saveEventStatus", "✓ Event deleted successfully.");
-});
-
 function showStatus(id, msg, isErr = false) {
   const el = $(id);
   if (!el) return;
@@ -190,17 +189,14 @@ function showStatus(id, msg, isErr = false) {
 }
 
 // ─── Responses Tab ────────────────────────────────────────────────────────────
-function renderResponsesTab() {
-  const list = loadJson(SK.waitlist, []);
-  $("rsTotal").textContent = list.length;
+async function renderResponsesTab() {
+  const { data: list, error } = await db.getWaitlist();
+  if (error) return;
+  const tbody = document.getElementById("responsesBody");
+  if (!tbody) return;
 
-  const todayStr = new Date().toISOString().slice(0, 10);
-  const todayCount = list.filter((r) => r.joinedAt?.slice(0, 10) === todayStr).length;
-  $("rsToday").textContent = todayCount;
-
-  const tbody = $("responseTableBody");
-  if (!list.length) {
-    tbody.innerHTML = `<tr><td class="empty-row" colspan="5">No waitlist entries yet.</td></tr>`;
+  if (!list || list.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:40px; color:var(--muted)">No entries yet. The waitlist is currently empty.</td></tr>`;
     return;
   }
 
@@ -210,13 +206,14 @@ function renderResponsesTab() {
       <td>${escHtml(r.email)}</td>
       <td>${escHtml(r.insta || "—")}</td>
       <td class="about-cell">${escHtml(r.about || "—")}</td>
-      <td>${new Intl.DateTimeFormat("en-IN", { dateStyle:"medium", timeStyle:"short" }).format(new Date(r.joinedAt))}</td>
+      <td>${new Intl.DateTimeFormat("en-IN", { dateStyle:"medium", timeStyle:"short" }).format(new Date(r.created_at))}</td>
     </tr>
   `).join("");
 }
 
-$("exportCsv").addEventListener("click", () => {
-  const list = loadJson(SK.waitlist, []);
+$("exportCsv").addEventListener("click", async () => {
+  const { data: list } = await db.getWaitlist();
+  if (!list) return;
   const headers = ["Name","Email","Instagram","About","Joined At"];
   const rows = list.map((r) => [r.name, r.email, r.insta, r.about, r.joinedAt]);
   const csv = [headers, ...rows]
