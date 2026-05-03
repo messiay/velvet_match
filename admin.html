@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin — Velvet Match</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./admin.css" />
+  </head>
+  <body class="admin-body">
+
+    <!-- LOGIN GATE -->
+    <div id="adminLoginGate" class="admin-login-gate">
+      <div class="alg-card">
+        <div class="alg-brand">
+          <img src="logo.png" alt="Logo" style="height: 48px; border-radius: 50%;">
+          <span>Velvet Match</span>
+        </div>
+        <h1>Admin Access</h1>
+        <p>This page is restricted to authorised team members only.</p>
+        <div class="alg-field">
+          <label for="adminEmail">Email Address</label>
+          <input id="adminEmail" type="email" placeholder="your@email.com" autocomplete="email" />
+        </div>
+        <p class="alg-error" id="algError" aria-live="polite"></p>
+        <button class="button primary full" id="adminLoginBtn" type="button">Access Admin Panel</button>
+        <a href="./index.html" class="alg-back">← Back to site</a>
+      </div>
+    </div>
+
+    <!-- ADMIN PANEL (hidden until authenticated) -->
+    <div id="adminPanel" class="admin-panel" style="display:none">
+
+      <aside class="admin-sidebar">
+        <div class="as-brand">
+          <img src="logo.png" alt="Logo" style="height: 32px; border-radius: 50%;">
+          <span>Admin</span>
+        </div>
+        <nav class="as-nav">
+          <a class="as-nav-item active" href="#" data-tab="event" id="tabEvent">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Event Details
+          </a>
+          <a class="as-nav-item" href="#" data-tab="responses" id="tabResponses">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Waitlist &amp; Responses
+          </a>
+          <a class="as-nav-item" href="#" data-tab="matches" id="tabMatches">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            Matching
+          </a>
+        </nav>
+        <div class="as-footer">
+          <span id="adminEmailDisplay"></span>
+          <button class="as-logout" id="adminLogout">Sign out</button>
+        </div>
+      </aside>
+
+      <main class="admin-main">
+
+        <!-- EVENT TAB -->
+        <div class="admin-tab" id="tabContentEvent">
+          <div class="admin-tab-header">
+            <h2>Event Details</h2>
+            <p>Set the event info and the profile form link. Once you save the form link, it becomes visible to guests on the main site.</p>
+          </div>
+
+          <div class="admin-cards-grid">
+
+            <div class="adm-card">
+              <h3>Event Info</h3>
+              <div class="adm-fields">
+                <div class="adm-field">
+                  <label for="evName">Event Name</label>
+                  <input id="evName" type="text" placeholder="Velvet Match — Edition 01" />
+                </div>
+                <div class="adm-field">
+                  <label for="evDate">Date</label>
+                  <input id="evDate" type="date" />
+                </div>
+                <div class="adm-field">
+                  <label for="evTime">Event Start Time</label>
+                  <input id="evTime" type="time" />
+                </div>
+                <div class="adm-field">
+                  <label for="evRevealTime">Match Reveal Time (Midnight Reveal)</label>
+                  <input id="evRevealTime" type="time" value="00:00" />
+                </div>
+                <div class="adm-field">
+                  <label for="evVenue">Venue</label>
+                  <input id="evVenue" type="text" placeholder="The name of the space" />
+                </div>
+                <div class="adm-field full">
+                  <label for="evNote">Guest Note (visible on main site)</label>
+                  <input id="evNote" type="text" placeholder="Dress code, entry note, parking info..." />
+                </div>
+              </div>
+              <div style="display:flex; gap:12px;">
+                <button class="button primary" id="saveEvent" type="button">Save Event Details</button>
+                <button class="button danger" id="deleteEvent" type="button">Delete Event</button>
+              </div>
+              <p class="adm-status" id="saveEventStatus"></p>
+            </div>
+
+            <div class="adm-card">
+              <h3>Profile Form Link</h3>
+              <p>Paste the Google Form or Typeform link for the guest profile questionnaire. Once saved, a button becomes visible on the main site directing guests to this link.</p>
+              <div class="adm-field">
+                <label for="formLink">Form URL</label>
+                <input id="formLink" type="url" placeholder="https://forms.google.com/..." />
+              </div>
+              <div class="adm-toggle-row">
+                <label class="adm-toggle-label">
+                  <input id="formLinkActive" type="checkbox" />
+                  <span>Make form link visible to guests</span>
+                </label>
+              </div>
+              <button class="button primary" id="saveFormLink" type="button">Save Form Settings</button>
+              <p class="adm-status" id="saveFormStatus"></p>
+            </div>
+
+            <div class="adm-card full-card">
+              <h3>Live Event Preview</h3>
+              <p>This is what guests see on the event card on the main site right now.</p>
+              <div class="preview-card">
+                <div class="pc-label">Next Event</div>
+                <div class="pc-name" id="prevName">Not set</div>
+                <div class="pc-details">
+                  <span id="prevDate">Date TBA</span>
+                  <span id="prevVenue">Venue TBA</span>
+                </div>
+                <div class="pc-note" id="prevNote"></div>
+                <div class="pc-form-cta" id="prevFormCta" style="display:none">
+                  <span>✓ Form link is active for guests</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- RESPONSES TAB -->
+        <div class="admin-tab" id="tabContentResponses" style="display:none">
+          <div class="admin-tab-header">
+            <div>
+              <h2>Waitlist & Responses</h2>
+              <p>Everyone who joined the waitlist from the main site.</p>
+            </div>
+            <div class="admin-tab-actions">
+              <button class="button quiet" id="exportCsv" type="button">Export CSV</button>
+              <button class="button danger" id="clearResponses" type="button">Clear All</button>
+            </div>
+          </div>
+
+          <div class="adm-card full-card">
+            <div class="response-stats">
+              <div class="rs-stat">
+                <span class="rs-num" id="rsTotal">0</span>
+                <span class="rs-label">Total on waitlist</span>
+              </div>
+              <div class="rs-stat">
+                <span class="rs-num" id="rsToday">0</span>
+                <span class="rs-label">Joined today</span>
+              </div>
+            </div>
+            <div class="response-table-wrap">
+              <table id="responseTable">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Instagram</th>
+                    <th>About Them</th>
+                    <th>Joined</th>
+                  </tr>
+                </thead>
+                <tbody id="responseTableBody">
+                  <tr><td class="empty-row" colspan="5">No responses yet.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- MATCHES TAB -->
+        <div class="admin-tab" id="tabContentMatches" style="display:none">
+          <div class="admin-tab-header">
+            <div>
+              <h2>Matching</h2>
+              <p>Run the compatibility algorithm across all profile form responses. Matches are revealed to guests via notification when you trigger the reveal.</p>
+            </div>
+          </div>
+
+          <div class="adm-card full-card">
+            <div class="match-controls">
+              <div class="mc-info">
+                <h3>Match Status</h3>
+                <p id="matchStatusText">No matches calculated yet. Import or collect profile form responses, then run matching.</p>
+              </div>
+              <div class="mc-actions">
+                <button class="button primary" id="calculateMatches" type="button">Run Matching Algorithm</button>
+                <button class="button quiet" id="releaseMatches" type="button">Reveal Matches to Guests</button>
+              </div>
+            </div>
+            <div class="match-import-section">
+              <h3>Import from Google Sheets</h3>
+              <p>Publish your Google Sheet as CSV and paste the link below. The sheet should have columns: <code>name, email, insta, about, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12</code> (one column per answer, values 0/1/2).</p>
+              <div class="sheets-import-steps">
+                <span>1. Open your Sheet → File → Share → Publish to web</span>
+                <span>2. Choose the response sheet → CSV → Publish</span>
+                <span>3. Copy the link and paste below</span>
+              </div>
+              <div class="adm-field" style="margin:14px 0 10px">
+                <label for="sheetsUrl">Published Sheet CSV URL</label>
+                <input id="sheetsUrl" type="url" placeholder="https://docs.google.com/spreadsheets/d/.../pub?output=csv" />
+              </div>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:6px">
+                <button class="button primary" id="fetchSheets" type="button">Fetch from Google Sheets</button>
+                <span style="align-self:center;color:rgba(249,219,189,0.4);font-size:0.85rem">— or —</span>
+                <button class="button quiet" id="toggleJsonImport" type="button">Paste JSON manually</button>
+              </div>
+              <div id="jsonImportArea" style="display:none;margin-top:12px">
+                <textarea id="importJson" rows="4" placeholder='[{"name":"Arjun","email":"a@b.com","insta":"@arjun","about":"...","answers":[0,1,2,0,1,2,0,1,2,0,1,2]}]'></textarea>
+                <button class="button quiet" id="importResponses" type="button" style="margin-top:8px">Import JSON</button>
+              </div>
+              <p class="adm-status" id="importStatus"></p>
+            </div>
+
+            <details class="algo-explainer">
+              <summary>⚙️ How the matching algorithm works</summary>
+              <div class="algo-body">
+                <p><strong>Weighted Compatibility Scoring</strong> — each of the 12 questions carries a different weight (6–11 pts). For each pair of people, we compute a score:</p>
+                <ul>
+                  <li><strong>Same-mode questions</strong> (e.g. date style, texting, affection): exact match = full weight, 1-apart = 62%, 2-apart = 22%</li>
+                  <li><strong>Balance-mode questions</strong> (energy, pace): complementary answers (1 apart) = full weight, exact = 82%, opposite = 55%</li>
+                </ul>
+                <p>The raw score is divided by max possible score → a <strong>0–100% compatibility number</strong>.</p>
+                <p><strong>Global Optimal Pairing</strong> — we don't just pair each person with their personal best match. We run a recursive algorithm that finds the set of pairs maximising <em>total compatibility across the whole room</em>. This is a brute-force best-matching for small groups (&lt;30 people) — elegant for an event, accurate for the numbers involved.</p>
+                <p>If there's an odd number of guests, the leftover person is added as a "best-fit trio" to whichever existing pair scores highest with them.</p>
+              </div>
+            </details>
+
+            <div class="match-results" id="matchResults"></div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+
+    <script src="./admin.js"></script>
+  </body>
+</html>

@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Velvet Match — The Matchmaking Night</title>
+    <meta name="description" content="An exclusive, curated matchmaking night. Fill in your profile, show up, and find your match. Not free. Not for everyone." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+
+    <header class="site-header" id="top">
+      <a class="brand" href="#top" aria-label="Velvet Match home">
+        <img src="logo.png" alt="Velvet Match Logo" style="height: 48px; border-radius: 50%;">
+        <span>Velvet Match</span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#about">About</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#event">The Event</a>
+        <a href="#register">Register</a>
+      </nav>
+      <div class="header-actions">
+        <a class="header-action" href="#register" id="headerJoinBtn">Join the Waitlist</a>
+        <div id="headerProfile" class="header-profile" style="display:none">
+          <div class="hp-monogram"></div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+
+      <!-- HERO -->
+      <section class="hero" id="hero">
+        <div class="hero-bg" aria-hidden="true">
+          <div class="hero-bg-gradient"></div>
+          <div class="hero-orb orb-1"></div>
+          <div class="hero-orb orb-2"></div>
+          <div class="hero-orb orb-3"></div>
+          <div class="hero-particles" id="heroParticles"></div>
+        </div>
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="badge-dot"></span>
+            <span>One Night. Real Connections.</span>
+          </div>
+          <h1 class="hero-title">
+            The Night You <br /><em>Actually Meet</em><br /> Someone.
+          </h1>
+          <p class="hero-lede">
+            Velvet Match is an exclusive, curated matchmaking evening — part dinner, part social experiment, all real. You fill in your profile. We do the math. The night does the rest.
+          </p>
+          <div class="hero-cta-group">
+            <a class="button primary large" href="#register" id="heroJoinBtn">
+              <span>Join the Waitlist</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a class="button ghost large" href="#how-it-works">See how it works</a>
+          </div>
+          <div class="hero-trust">
+            <span class="trust-item">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Open to couples &amp; invited singles
+            </span>
+            <span class="trust-item">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+              Ticketed event
+            </span>
+            <span class="trust-item">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              Match revealed at midnight
+            </span>
+          </div>
+        </div>
+        <div class="hero-event-panel" id="eventPanel">
+          <div class="ep-top">
+            <span class="ep-label">Next Event</span>
+            <span class="ep-status" id="epStatus">Announcing soon</span>
+          </div>
+          <div class="ep-name" id="epName">Coming Soon</div>
+          <div class="ep-details">
+            <div class="ep-detail-row">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span id="epDate">Date TBA</span>
+            </div>
+            <div class="ep-detail-row">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span id="epVenue">Venue TBA</span>
+            </div>
+          </div>
+          <div class="ep-countdown-wrap" id="epCountdownWrap">
+            <p class="ep-countdown-label">Event starts in</p>
+            <div class="ep-countdown">
+              <div class="ep-cd-unit">
+                <span id="cdDays">00</span>
+                <small>Days</small>
+              </div>
+              <span class="ep-cd-sep">:</span>
+              <div class="ep-cd-unit">
+                <span id="cdHours">00</span>
+                <small>Hrs</small>
+              </div>
+              <span class="ep-cd-sep">:</span>
+              <div class="ep-cd-unit">
+                <span id="cdMins">00</span>
+                <small>Min</small>
+              </div>
+              <span class="ep-cd-sep">:</span>
+              <div class="ep-cd-unit">
+                <span id="cdSecs">00</span>
+                <small>Sec</small>
+              </div>
+            </div>
+          </div>
+          <div class="ep-form-cta" id="epFormCta" style="display:none">
+            <p class="ep-form-note">The form is now open. Secure your spot before it fills.</p>
+            <a class="button primary full" id="epFormLink" href="#" target="_blank">Fill Your Profile Form</a>
+          </div>
+          <div class="ep-note" id="epNote"></div>
+        </div>
+      </section>
+
+      <!-- ABOUT BAND -->
+      <section class="section-band about-band" id="about">
+        <div class="about-inner">
+          <div class="about-text">
+            <p class="eyebrow">What is Velvet Match?</p>
+            <h2>Not an app. <br />A real night out.</h2>
+            <p class="about-lede">
+              We're tired of swiping. You probably are too. Velvet Match is a curated, in-person matchmaking event where you show up, the vibe is right, and you actually meet people worth meeting.
+            </p>
+            <p>
+              Everyone fills in a personality profile before the night. We run a compatibility algorithm behind the scenes. When the clock hits midnight, every guest gets a personalised match notification — your name, their name, your score. What you do with it is up to you.
+            </p>
+            <div class="about-pills">
+              <span class="pill">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Curated Guestlist
+              </span>
+              <span class="pill">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+                Compatibility Matching
+              </span>
+              <span class="pill">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                Match Reveal at Midnight
+              </span>
+              <span class="pill">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Premium Venue
+              </span>
+            </div>
+          </div>
+          <div class="about-cards">
+            <div class="about-stat-card">
+              <span class="stat-num">12</span>
+              <span class="stat-label">Compatibility questions</span>
+            </div>
+            <div class="about-stat-card accent">
+              <span class="stat-num">1</span>
+              <span class="stat-label">Night to find your match</span>
+            </div>
+            <div class="about-stat-card">
+              <span class="stat-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              </span>
+              <span class="stat-label">Match revealed via notification</span>
+            </div>
+            <div class="about-stat-card accent-2">
+              <span class="stat-num">∞</span>
+              <span class="stat-label">Possibilities in one room</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HOW IT WORKS -->
+      <section class="section-band hiw-band" id="how-it-works">
+        <div class="section-heading">
+          <p class="eyebrow">How It Works</p>
+          <h2>Simple. Intentional. Unforgettable.</h2>
+          <p>Four steps stand between you and the most interesting night of your year.</p>
+        </div>
+        <div class="hiw-timeline">
+          <div class="hiw-step">
+            <div class="hiw-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </div>
+            <div class="hiw-step-body">
+              <span class="hiw-num">01</span>
+              <h3>Fill Your Profile</h3>
+              <p>Once the form link goes live, you'll answer 12 questions about your vibe, personality, what you're looking for, and how you move through a room. Takes 5 minutes. No right answers.</p>
+            </div>
+          </div>
+          <div class="hiw-step">
+            <div class="hiw-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
+            </div>
+            <div class="hiw-step-body">
+              <span class="hiw-num">02</span>
+              <h3>Get Your Ticket</h3>
+              <p>Velvet Match is a ticketed event — it's not free, and that's the point. The fee keeps the guestlist serious and the venue premium. Confirmed guests only.</p>
+            </div>
+          </div>
+          <div class="hiw-step">
+            <div class="hiw-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 11v11"/><path d="M20 2H4l2 9a6 6 0 0 0 12 0z"/></svg>
+            </div>
+            <div class="hiw-step-body">
+              <span class="hiw-num">03</span>
+              <h3>Show Up & Enjoy the Night</h3>
+              <p>Come dressed. Come curious. Come alone or with one friend. Mix, mingle, eat, drink. The evening is designed so conversations flow naturally. Nobody wears a name tag.</p>
+            </div>
+          </div>
+          <div class="hiw-step">
+            <div class="hiw-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </div>
+            <div class="hiw-step-body">
+              <span class="hiw-num">04</span>
+              <h3>The Midnight Match Reveal</h3>
+              <p>When the event starts, a countdown begins behind the scenes. When it hits zero — every guest gets a notification with their top match. Name, a compatibility note, and their contact. The rest is up to the two of you.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- THE EVENT SECTION -->
+      <section class="section-band event-band" id="event">
+        <div class="section-heading">
+          <p class="eyebrow">The Experience</p>
+          <h2>What to expect on the night.</h2>
+        </div>
+        <div class="event-grid">
+          <div class="event-feature-card main-card">
+            <div class="efc-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <h3>The Venue</h3>
+            <p>A carefully chosen space — think warm lighting, good music, comfortable seating, and a bar that knows what it's doing. Details drop when you're registered.</p>
+          </div>
+          <div class="event-feature-card">
+            <div class="efc-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <h3>Dress Code</h3>
+            <p>Smart casual to elegant. Come looking like someone worth meeting. No athleisure. No hoodies. The vibe is intentional.</p>
+          </div>
+          <div class="event-feature-card">
+            <div class="efc-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
+            </div>
+            <h3>The Algorithm</h3>
+            <p>Your 12 answers get cross-matched with every other guest. We weight questions differently — energy, ambition, connection style, pace. The output is your single best match in the room.</p>
+          </div>
+          <div class="event-feature-card">
+            <div class="efc-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </div>
+            <h3>Match Notification</h3>
+            <p>Once the event begins, a countdown runs in the background. At the reveal moment, you'll get a notification — your match, their name, and why we think it works. No awkward announcements. Just a quiet buzz in your pocket.</p>
+          </div>
+          <div class="event-feature-card">
+            <div class="efc-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <h3>Not Free — By Design</h3>
+            <p>Tickets cost money. That's intentional. People who show up having paid are invested, curious, and present. We'd rather 40 serious guests than 200 people who wandered in.</p>
+          </div>
+          <div class="event-feature-card">
+            <div class="efc-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+            </div>
+            <h3>Couples &amp; Invited Singles Only</h3>
+            <p>This event is open to couples exploring connection and individually invited singles. You can only join via the waitlist — every guest has been through the profile form.</p>
+          </div>
+        </div>
+      </section>
+
+
+
+      <!-- PROFILE SECTION (Hidden until registered) -->
+      <section class="section-band reveal" id="profileSection" style="display:none">
+        <div class="register-inner">
+          <div class="register-text">
+            <p class="eyebrow">Your Status</p>
+            <h2>You're officially on the list.</h2>
+            <p>Your profile is locked in for the next edition. We'll reach out via WhatsApp and Email as soon as the countdown ends and matches are revealed.</p>
+            <div class="register-perks">
+              <div class="register-perk">
+                <span>✓</span>
+                <p><strong>Verified Entry</strong> — Show your badge at the door.</p>
+              </div>
+              <div class="register-perk">
+                <span>✓</span>
+                <p><strong>Priority Matching</strong> — Your profile is in the active pool.</p>
+              </div>
+            </div>
+            <button class="button ghost" id="resetWaitlist" style="margin-top:24px; font-size:0.8rem; opacity:0.5;">Not you? Register again</button>
+          </div>
+          <div class="register-form-card" id="userProfileCard">
+            <!-- This will be populated with the badge via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- REGISTER / WAITLIST -->
+      <section class="section-band register-band" id="register">
+        <div class="register-inner">
+          <div class="register-text">
+            <p class="eyebrow">Join the Waitlist</p>
+            <h2>Secure your spot before we close the list.</h2>
+            <p class="register-eligibility">Open to <strong>couples</strong> and <strong>invited singles</strong> only. Complete your profile to be considered for the guestlist.</p>
+            <p>
+              Spots are limited. Once you're on the waitlist, we'll reach out with event details, the profile form link, and ticketing info.
+            </p>
+            <div class="register-perks">
+              <div class="register-perk">
+                <span><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <p>Early access to event details and date</p>
+              </div>
+              <div class="register-perk">
+                <span><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <p>Priority access to the profile form</p>
+              </div>
+              <div class="register-perk">
+                <span><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <p>Your personalised profile badge, generated on signup</p>
+              </div>
+            </div>
+          </div>
+          <div class="register-form-card">
+            <div id="waitlistSuccess" class="waitlist-success" style="display:none">
+              <div id="profileBadge" class="profile-badge">
+                <div class="pb-top">
+                  <span class="pb-brand">vm</span>
+                  <span class="pb-event-label">Velvet Match</span>
+                </div>
+                <div class="pb-monogram" id="pbMonogram">VM</div>
+                <div class="pb-name" id="pbName">Your Name</div>
+                <div class="pb-meta" id="pbMeta">—</div>
+                <div class="pb-divider"></div>
+                <div class="pb-footer">
+                  <span class="pb-badge-num" id="pbBadgeNum">#0000</span>
+                  <span class="pb-edition">Waitlist Confirmed</span>
+                </div>
+              </div>
+              <p class="badge-caption">Your profile badge. Screenshot it — you'll need it at the door.</p>
+              <a class="button primary full" href="./community.html" style="margin-top:16px">Follow us for updates</a>
+            </div>
+            <form id="waitlistForm" autocomplete="off">
+              <h3>Your Profile</h3>
+              <p class="form-subtitle">Open to couples &amp; invited singles. Takes 60 seconds.</p>
+              <div class="wl-field">
+                <label for="wlName">Full Name</label>
+                <input id="wlName" type="text" placeholder="What should we call you?" required autocomplete="name" />
+              </div>
+              <div class="wl-field">
+                <label for="wlEmail">Email Address</label>
+                <input id="wlEmail" type="email" placeholder="you@example.com" required autocomplete="email" />
+              </div>
+              <div class="wl-field">
+                <label for="wlInsta">Instagram Handle</label>
+                <input id="wlInsta" type="text" placeholder="@yourhandle" autocomplete="off" />
+              </div>
+              <div class="wl-row">
+                <div class="wl-field">
+                  <label for="wlGender">Gender</label>
+                  <select id="wlGender" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="Man">Man</option>
+                    <option value="Woman">Woman</option>
+                    <option value="Non-binary">Non-binary</option>
+                    <option value="Prefer not to say">Prefer not to say</option>
+                  </select>
+                </div>
+                <div class="wl-field">
+                  <label for="wlStatus">Attending as</label>
+                  <select id="wlStatus" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="Single">Single</option>
+                    <option value="Couple">Part of a Couple</option>
+                    <option value="Open">Open Relationship</option>
+                  </select>
+                </div>
+              </div>
+              <div class="wl-field">
+                <label for="wlAbout">Tell us about yourself</label>
+                <textarea id="wlAbout" rows="3" placeholder="Who are you, what do you do, what brings you here?" required></textarea>
+              </div>
+              <p class="wl-error" id="wlError" aria-live="polite"></p>
+              <button class="button primary full" type="submit" id="wlSubmit">
+                <span>Get Me on the List</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+              <p class="wl-disclaimer">No spam. No selling your data. Just event updates.</p>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="footer-inner">
+          <div class="footer-brand">
+            <img src="logo.png" alt="Velvet Match Logo" style="height: 32px; border-radius: 50%;">
+            <span>Velvet Match</span>
+          </div>
+          <p class="footer-tagline">One night. Real connections. Your match revealed at midnight.</p>
+          <div class="footer-links">
+            <a href="./community.html">Instagram & WhatsApp</a>
+            <span>·</span>
+            <a href="#register">Join Waitlist</a>
+          </div>
+          <p class="footer-copy">© 2025 Velvet Match. All rights reserved. This is a paid, invite-only event.</p>
+        </div>
+      </footer>
+
+    </main>
+
+    <div class="fun-fact-float" id="funFactBtn" aria-label="Fun Fact">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+    <!-- REVEAL OVERLAY -->
+    <div id="revealOverlay" class="reveal-overlay" style="display:none">
+      <div class="reveal-clock-wrap">
+        <svg class="reveal-clock-svg" viewBox="0 0 100 100">
+          <circle class="reveal-clock-bg" cx="50" cy="50" r="45"></circle>
+          <circle id="revealClockProgress" class="reveal-clock-progress" cx="50" cy="50" r="45"></circle>
+        </svg>
+        <div class="reveal-clock-time" id="revealClockTime">60</div>
+      </div>
+      <div class="reveal-msg">The wait is over. Finding your soul in the crowd...</div>
+    </div>
+
+    <!-- MATCH REVEAL MODAL -->
+    <div id="matchRevealModal" class="match-reveal-modal" style="display:none">
+      <div class="match-reveal-card">
+        <div class="mrc-glow"></div>
+        <div class="mrc-sparkles" id="mrcSparkles"></div>
+        <p class="mrc-eyebrow">A match has been found</p>
+        <h3 id="mrcName">Partner Name</h3>
+        <p class="mrc-insta" id="mrcInsta">@insta_handle</p>
+        <div class="mrc-divider"></div>
+        <p class="mrc-note">We've notified them too. The night is yours.</p>
+        <button class="button primary full" id="mrcClose">Perfect</button>
+      </div>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
