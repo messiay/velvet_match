@@ -56,8 +56,8 @@ function updateCountdown() {
   el("cdSecs")  && (el("cdSecs").textContent  = pad(secs));
 
   // Reveal Logic
-  if (ev.revealTime && state.user && !revealTriggered) {
-    const revealDate = new Date(`${ev.date}T${ev.revealTime}`);
+  if (ev.reveal_time && state.user && !revealTriggered) {
+    const revealDate = new Date(`${ev.date}T${ev.reveal_time}`);
     const revealMs = revealDate.getTime();
     const timeToReveal = revealMs - now;
 
@@ -69,7 +69,7 @@ function updateCountdown() {
     }
   }
 
-  if (diff === 0 && !ev.revealTime) {
+  if (diff === 0 && !ev.reveal_time) {
     cdWrap.innerHTML = `<div class="cd-started"><span>🔔</span><p>The event has started! Match reveals are going out.</p></div>`;
     clearInterval(countdownInterval);
   }
